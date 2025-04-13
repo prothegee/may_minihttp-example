@@ -1,0 +1,22 @@
+{
+    "compounds": [
+        {
+            "name": "_LAUNCH: ALL",
+            "configurations": [
+                "example-may_minihttp-stack",
+            ],
+            "stopAll": true
+        }
+    ],
+    "configurations": [
+        {
+            "name": "example-may_minihttp-stack",
+            "type": "lldb",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/target/debug",
+            "program": "${workspaceFolder}/target/debug/example-may_minihttp-stack",
+            "args": [],
+            "preLaunchTask": "BUILD: Cargo project",
+        }
+    ]
+}

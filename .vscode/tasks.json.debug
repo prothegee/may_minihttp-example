@@ -1,0 +1,13 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "BUILD: Cargo project",
+            "type": "shell",
+            "command": "cargo",
+            "args": [
+                "c", "&&", "cargo", "b"
+            ]
+        }
+    ]
+}

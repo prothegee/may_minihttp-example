@@ -1,0 +1,7 @@
+[config]
+# 1:debug 2:staging 3:demo/alpha 4:production
+status = 1
+release_date = "20250413"
+listeners = [
+    { address = "127.0.0.1", port = 8080 }
+]

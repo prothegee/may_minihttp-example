@@ -1,0 +1,12 @@
+[package]
+name = "may_minihttp-example"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+buf-min = { version = "0.7", features = ["bytes"] } # required to integrates [ may, may_minihttp, yarte ]
+may = "0.3.49"
+may_minihttp = "0.1.11"
+regex = "1.11.1"
+toml = "0.8.20"
+yarte = { version = "0.15", features = ["bytes-buf", "json"] }

@@ -1,6 +1,6 @@
 # example may_minihttp stack
 
-an example using mini_http as backend stack
+an example using may_minihttp as backend stack
 
 only tested in linux environment
 

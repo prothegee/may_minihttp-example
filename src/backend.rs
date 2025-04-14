@@ -22,6 +22,12 @@ impl BackendRouter {
                 crate::controllers::api::check::status::config);
         }
 
+        // /api/submit*
+        {
+            router.add_route("/api/submit/item", 
+                crate::controllers::api::submit::item);
+        }
+
         BackendRouter { router }
     }
 }

@@ -14,7 +14,7 @@
             "type": "lldb",
             "request": "launch",
             "cwd": "${workspaceFolder}/target/debug",
-            "program": "${workspaceFolder}/target/debug/example-may_minihttp-stack",
+            "program": "${workspaceFolder}/target/debug/may_minihttp-example",
             "args": [],
             "preLaunchTask": "BUILD: Cargo project",
         }

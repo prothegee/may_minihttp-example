@@ -2,12 +2,13 @@ pub mod status {
     use yarte::Serialize;
     use may_minihttp::{Request, Response};
 
-    use crate::{constants::{content, http}, types::status::TStatusConfig};
+    use crate::{constants::http, types::status::TStatusConfig};
 
     #[allow(non_snake_case, unused_variables)]
     pub fn config(req: Request, resp: &mut Response) {
-        resp.header(content::content_http_type::APPLICATION_JSON);
+        resp.header(http::content_type::APPLICATION_JSON);
 
+        // maybe the's a condition where you want to use multiple methods in single endpoint
         match req.method() {
             http::method::GET => {
                 let version = env!("CARGO_PKG_VERSION");

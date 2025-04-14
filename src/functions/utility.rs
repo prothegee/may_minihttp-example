@@ -1,4 +1,5 @@
-#[allow(non_snake_case)]
+#![allow(dead_code, non_snake_case)]
+
 pub mod toml {
     use toml as toml_crate;
     use std::sync::OnceLock;
@@ -21,5 +22,17 @@ pub mod toml {
                 .expect(format!("failed to read {}", filePath).as_str());
             config_content.parse().expect(format!("failed to parse {}", filePath).as_str())
         })
+    }
+}
+
+pub mod sanitize {
+    /**
+    ### brief
+    sanitizes a filename by removing path traversal components and invalid characters
+    */
+    pub fn fileName(name: &str) -> String {
+        name.chars()
+            .filter(|c| c.is_ascii_alphanumeric() || matches!(c, '.' | '-' | '_'))
+            .collect()
     }
 }

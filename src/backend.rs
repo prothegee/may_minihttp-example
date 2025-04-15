@@ -1,4 +1,6 @@
 use std::io;
+use std::sync::Once;
+use crate::plugins::{core::CorePlugin, traits::TraitPlugin};
 use may_minihttp::{HttpService, HttpServiceFactory, Request, Response};
 use crate::route::Router;
 
@@ -45,6 +47,14 @@ impl HttpServiceFactory for BackendAppFramework {
     type Service = BackendRouter;
 
     fn new_service(&self, _id: usize) -> Self::Service {
+        // plugins initialized once per worker
+        // might be doesn't exists for some backend when it start
+        static INIT: Once = Once::new();
+        INIT.call_once(|| {
+            let config = crate::functions::utility::toml::fromFile("../../config.toml");
+            CorePlugin::initialize(config).expect("Plugin init failed");
+        });
+        
         BackendRouter::new()
     }
 }

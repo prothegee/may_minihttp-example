@@ -33,7 +33,7 @@ pub fn item(req: Request, resp: &mut Response) {
         message: "n/a"
     };
 
-    // focing one method
+    // forcing one method
     if req.method() != http::method::POST {
         resp.status_code(405, "not allowed");
         return;
@@ -64,7 +64,7 @@ pub fn item(req: Request, resp: &mut Response) {
         return;
     }
 
-    // parse multipart data?
+    // parse multipart data
     let body = match {
         let mut body_data = Vec::new();
         req.body().read_to_end(&mut body_data)
@@ -72,6 +72,7 @@ pub fn item(req: Request, resp: &mut Response) {
     } {
         Ok(b) => b,
         Err(e) => {
+            eprintln!("ERROR: parsing data \"{e}\"");
             resp.status_code(500, "Internal Server Error")
                 .body(r#"{"error":"Body read failed"}"#);
             return;
@@ -105,6 +106,7 @@ pub fn item(req: Request, resp: &mut Response) {
                                 }
                             }
                             Err(e) => {
+                                eprintln!("ERROR: data field \"{e}\"");
                                 resp.status_code(400, "Bad Request")
                                     .body(r#"{{"error":"Data field error"}}"#);
                                 return;
@@ -127,6 +129,7 @@ pub fn item(req: Request, resp: &mut Response) {
                         match data {
                             Ok(bytes) => files.push((filename, bytes.to_vec())),
                             Err(e) => {
+                                eprintln!("ERROR: file read error \"{e}\"");
                                 resp.status_code(500, "Internal Server Error")
                                     .body(r#"{{"error":"File read error"}}"#);
                                 return;
@@ -137,6 +140,7 @@ pub fn item(req: Request, resp: &mut Response) {
             }
             Ok(None) => break, // no more fields
             Err(e) => {
+                eprintln!("ERROR: field processing error \"{e}\"");
                 resp.status_code(400, "Bad Request")
                     .body(r#"{{"error":"Field processing error"}}"#);
                 return;
@@ -151,12 +155,7 @@ pub fn item(req: Request, resp: &mut Response) {
         return;
     }
 
-    // create pub dir?
-    if let Err(e) = std::fs::create_dir_all("../../public/upload") {
-        resp.status_code(500, "Internal Server Error")
-            .body(r#"{{"error":"Directory creation failed"}}"#);
-        return;
-    }
+    // create pub dir, already created when server start
     // save data for each item and save those files
     for item in &items {
         let expected_file = crate::functions::utility::sanitize::fileName(&item.item_image);
@@ -175,6 +174,7 @@ pub fn item(req: Request, resp: &mut Response) {
     for (filename, data) in files {
         let path = Path::new("../../public/upload").join(&filename);
         if let Err(e) = std::fs::write(&path, &data) {
+            eprintln!("ERROR: failed to save file \"{e}\"");
             resp.status_code(500, "Internal Server Error")
                 .body(r#"{{"error":"File save failed"}}"#);
             return;

@@ -60,17 +60,15 @@ impl Router {
     }
 
     pub fn handle_request(&self, req: Request, resp: &mut Response) {
-        let path = req.path();
+        let base_path = req.path().splitn(2, '?').next().unwrap_or("");
 
-        if let Some(handler) = self.static_routes.get(path) {
+        if let Some(handler) = self.static_routes.get(base_path) {
             handler(req, resp);
             return;
         }
 
         for route in &self.routes {
-            if let Some(_captures) = route.pattern.captures(path) {
-                // if you need to use parameters, you can access them via captures
-                // e.g.: captures.get(1).map(|m| m.as_str())
+            if let Some(_captures) = route.pattern.captures(base_path) {
                 (route.handler)(req, resp);
                 return;
             }

@@ -22,10 +22,16 @@ impl BackendRouter {
                 crate::controllers::api::check::status::config);
         }
 
-        // /api/param
+        // /api/param*
         {
             router.add_route("/api/param", 
                 crate::controllers::api::param::message);
+        }
+
+        // /api/path*
+        {
+            // maybe: /api/path/{path1}/{path2}
+            // check those and get path1 & path2 value on the controleer
         }
 
         // /api/submit*

@@ -27,7 +27,7 @@ curl -X POST \
 pub fn item(req: Request, resp: &mut Response) {
     resp.header(http::content_type::CT_APPLICATION_JSON);
 
-    let mut callback_data = TMessageOk {
+    let mut callback = TMessageOk {
         ok: false,
         message: "n/a"
     };
@@ -180,17 +180,17 @@ pub fn item(req: Request, resp: &mut Response) {
     }
 
     // double check
-    if !callback_data.ok {
+    if !callback.ok {
         resp.status_code(400, "bad request");
 
-        callback_data.to_bytes_mut(resp.body_mut());
+        callback.to_bytes_mut(resp.body_mut());
         return;
     }
 
     // finally, it's clear
-    callback_data.ok = true;
-    callback_data.message = "ok";
+    callback.ok = true;
+    callback.message = "ok";
 
-    callback_data.to_bytes_mut(resp.body_mut());
+    callback.to_bytes_mut(resp.body_mut());
     resp.status_code(200, "ok");
 }

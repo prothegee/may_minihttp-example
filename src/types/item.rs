@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 use yarte::Serialize;
 use serde::Deserialize;
 

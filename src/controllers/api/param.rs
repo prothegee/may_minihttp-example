@@ -23,11 +23,11 @@ pub fn message(req: Request, resp: &mut Response) {
 
     let message = params.get("message").map(|s| s.as_str()).unwrap_or("default").to_string();
 
-    let callback_data = TParamMessage {
+    let callback = TParamMessage {
         message: format!("{}, {}", req.method(), message)
     };
 
-    callback_data.to_bytes_mut(resp.body_mut());
+    callback.to_bytes_mut(resp.body_mut());
 
     resp.status_code(200, "ok");
 }

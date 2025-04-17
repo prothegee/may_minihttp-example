@@ -75,6 +75,11 @@ impl Router {
         }
 
         // TODO: what if octect stream or some file for public access?
+        // could be:
+        // - check the url endpoint
+        // - match the file
+        // - render content from content type based on extension?
+        // - blocking or no-blocking?
 
         resp.status_code(404, "not found, what are you doing?");
     }

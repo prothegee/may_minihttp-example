@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 use yarte::Serialize;
 
 #[derive(Serialize)]
@@ -9,6 +7,7 @@ pub struct TStatusConfig {
     pub release_date: &'static str,
 }
 
+#[allow(dead_code)]
 pub struct TStatusCodeResponse {
     pub code: usize,
     pub msg: &'static str

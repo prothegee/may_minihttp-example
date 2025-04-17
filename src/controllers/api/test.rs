@@ -9,11 +9,11 @@ pub fn hello(req: Request, resp: &mut Response) {
     // maybe the's a condition where you want to use multiple methods in single endpoint
     match req.method() {
         http::method::GET => {
-            let callback_data = TMessage {
+            let callback = TMessage {
                 message: "hello"
             };
 
-            callback_data.to_bytes_mut(resp.body_mut());
+            callback.to_bytes_mut(resp.body_mut());
             resp.status_code(200, "ok");
         }
         _ => {

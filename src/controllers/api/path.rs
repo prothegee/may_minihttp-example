@@ -16,8 +16,9 @@ pub fn handle_path(req: Request, resp: &mut Response) {
     let mut path2: String = "".to_string();
 
     let raw = req.path().splitn(2, '?').next().unwrap_or("").to_string();
-    let re = Regex::new(r"^/api/path/([^/]+)/([^/]+)$").unwrap();
-    if let Some(caps) = re.captures(&raw) {
+    let reg = Regex::new(r"^/api/path/([^/]+)/([^/]+)$").unwrap();
+
+    if let Some(caps) = reg.captures(&raw) {
         path1 = caps.get(1).unwrap().as_str().to_string();
         path2 = caps.get(2).unwrap().as_str().to_string();
     }
@@ -38,12 +39,12 @@ pub fn handle_path(req: Request, resp: &mut Response) {
         return;
     }
 
-    let callback_data = TTwoPathsRes {
-        path1: path1,
-        path2: path2,
+    let callback = TTwoPathsRes {
+        path1,
+        path2,
     };
 
-    callback_data.to_bytes_mut(resp.body_mut());
+    callback.to_bytes_mut(resp.body_mut());
 
     resp.status_code(200, "ok");
 }

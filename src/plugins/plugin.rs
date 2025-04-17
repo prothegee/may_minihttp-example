@@ -1,4 +1,3 @@
-// src/plugins/plugin.rs
 use std::path::Path;
 use toml::Value;
 use super::traits::TraitPlugin;

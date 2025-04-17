@@ -4,7 +4,7 @@ pub mod status {
 
     use crate::{constants::http, types::status::TStatusConfig};
 
-    #[allow(non_snake_case, unused_variables)]
+    #[allow(non_snake_case)]
     pub fn config(req: Request, resp: &mut Response) {
         resp.header(http::content_type::APPLICATION_JSON);
 
@@ -13,7 +13,7 @@ pub mod status {
             http::method::GET => {
                 let version = env!("CARGO_PKG_VERSION");
 
-                let config = crate::functions::utility::toml::fromFile("../backend/rust/com_prothegee_api/config.toml");
+                let config = crate::functions::utility::toml::from_file("../backend/rust/com_prothegee_api/config.toml");
 
                 let status = config["config"]["status"].as_integer().expect("config status is not right") as i8;
                 let release_date = config["config"]["release_date"].as_str().expect("config release_date is not right");

@@ -12,6 +12,3 @@ pub struct TMessageOk {
     pub ok: bool,
     pub message: &'static str
 }
-
-#[derive(Clone)]
-pub struct TMessageOkWithData;

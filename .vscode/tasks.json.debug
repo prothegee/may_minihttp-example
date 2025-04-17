@@ -8,6 +8,14 @@
             "args": [
                 "c", "&&", "cargo", "b"
             ]
+        },
+        {
+            "label": "BUILD: Cargo project --release",
+            "type": "shell",
+            "command": "cargo",
+            "args": [
+                "c", "&&", "cargo", "b", "--release"
+            ]
         }
     ]
 }

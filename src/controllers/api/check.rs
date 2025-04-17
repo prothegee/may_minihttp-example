@@ -6,7 +6,7 @@ pub mod status {
 
     #[allow(non_snake_case)]
     pub fn config(req: Request, resp: &mut Response) {
-        resp.header(http::content_type::APPLICATION_JSON);
+        resp.header(http::content_type::CT_APPLICATION_JSON);
 
         // maybe the's a condition where you want to use multiple methods in single endpoint
         match req.method() {

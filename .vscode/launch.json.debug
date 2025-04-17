@@ -3,20 +3,36 @@
         {
             "name": "_LAUNCH: ALL",
             "configurations": [
-                "example-may_minihttp-stack",
+                "DEBUG: example-may_minihttp-stack",
+            ],
+            "stopAll": true
+        },
+        {
+            "name": "_LAUNCH: ALL - RELEASE",
+            "configurations": [
+                "RELEASE: example-may_minihttp-stack",
             ],
             "stopAll": true
         }
     ],
     "configurations": [
         {
-            "name": "example-may_minihttp-stack",
+            "name": "DEBUG: example-may_minihttp-stack",
             "type": "lldb",
             "request": "launch",
             "cwd": "${workspaceFolder}/target/debug",
-            "program": "${workspaceFolder}/target/debug/may_minihttp-example",
+            "program": "${workspaceFolder}/target/debug/may_minihttp-example.exe",
             "args": [],
             "preLaunchTask": "BUILD: Cargo project",
+        },
+        {
+            "name": "RELEASE: example-may_minihttp-stack",
+            "type": "lldb",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/target/release",
+            "program": "${workspaceFolder}/target/release/may_minihttp-example.exe",
+            "args": [],
+            "preLaunchTask": "BUILD: Cargo project --release",
         }
     ]
 }

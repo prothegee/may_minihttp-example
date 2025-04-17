@@ -30,8 +30,8 @@ impl BackendRouter {
 
         // /api/path*
         {
-            // maybe: /api/path/{path1}/{path2}
-            // check those and get path1 & path2 value on the controleer
+            router.add_route("/api/path/{path1}/{path2}",
+                crate::controllers::api::path::handle_path);
         }
 
         // /api/submit*

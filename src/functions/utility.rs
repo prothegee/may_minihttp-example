@@ -1,5 +1,3 @@
-#![allow(dead_code, non_snake_case)]
-
 pub mod toml {
     use toml as toml_crate;
     use std::sync::OnceLock;
@@ -16,11 +14,11 @@ pub mod toml {
     ### return
     `toml::Table` - the parsed TOML data as `toml::Table`
     */
-    pub fn fromFile(filePath: &str) -> &'static toml_crate::Value {
+    pub fn from_file(file_path: &str) -> &'static toml_crate::Value {
         CONFIG.get_or_init(|| {
-            let config_content = std::fs::read_to_string(filePath)
-                .expect(format!("failed to read {}", filePath).as_str());
-            config_content.parse().expect(format!("failed to parse {}", filePath).as_str())
+            let config_content = std::fs::read_to_string(file_path)
+                .expect(format!("failed to read {}", file_path).as_str());
+            config_content.parse().expect(format!("failed to parse {}", file_path).as_str())
         })
     }
 }
@@ -30,7 +28,7 @@ pub mod sanitize {
     ### brief
     sanitizes a filename by removing path traversal components and invalid characters
     */
-    pub fn fileName(name: &str) -> String {
+    pub fn file_name(name: &str) -> String {
         name.chars()
             .filter(|c| c.is_ascii_alphanumeric() || matches!(c, '.' | '-' | '_'))
             .collect()

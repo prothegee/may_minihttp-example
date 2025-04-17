@@ -24,11 +24,10 @@ curl -X POST \
   http://localhost:8080/api/submit/item
 ```
 */
-#[allow(non_snake_case)]
 pub fn item(req: Request, resp: &mut Response) {
     resp.header(http::content_type::CT_APPLICATION_JSON);
 
-    let mut callbackData = TMessageOk {
+    let mut callback_data = TMessageOk {
         ok: false,
         message: "n/a"
     };
@@ -116,7 +115,7 @@ pub fn item(req: Request, resp: &mut Response) {
                     _ => {
                         // process file
                         let filename = field.file_name()
-                            .map(|f| crate::functions::utility::sanitize::fileName(f))
+                            .map(|f| crate::functions::utility::sanitize::file_name(f))
                             .unwrap_or_default();
 
                         if filename.is_empty() {
@@ -155,10 +154,9 @@ pub fn item(req: Request, resp: &mut Response) {
         return;
     }
 
-    // create pub dir, already created when server start
     // save data for each item and save those files
     for item in &items {
-        let expected_file = crate::functions::utility::sanitize::fileName(&item.item_image);
+        let expected_file = crate::functions::utility::sanitize::file_name(&item.item_image);
         if expected_file.is_empty() {
             resp.status_code(400, "Bad Request")
                 .body(r#"{"error":"Invalid image name"}"#);
@@ -182,17 +180,17 @@ pub fn item(req: Request, resp: &mut Response) {
     }
 
     // double check
-    if !callbackData.ok {
+    if !callback_data.ok {
         resp.status_code(400, "bad request");
 
-        callbackData.to_bytes_mut(resp.body_mut());
+        callback_data.to_bytes_mut(resp.body_mut());
         return;
     }
 
     // finally, it's clear
-    callbackData.ok = true;
-    callbackData.message = "ok";
+    callback_data.ok = true;
+    callback_data.message = "ok";
 
+    callback_data.to_bytes_mut(resp.body_mut());
     resp.status_code(200, "ok");
-    callbackData.to_bytes_mut(resp.body_mut());
 }

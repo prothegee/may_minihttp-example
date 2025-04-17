@@ -1,4 +1,3 @@
-// src/plugins/core.rs
 use std::sync::OnceLock;
 use toml::Value;
 use super::{plugin::PluginProjectDir, traits::TraitPlugin};

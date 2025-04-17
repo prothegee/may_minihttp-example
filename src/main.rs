@@ -11,7 +11,10 @@ mod route;
 mod types;
 
 fn main() {
-    let config = crate::functions::utility::toml::fromFile("../../config.toml");
+    let config = crate::functions::utility::toml::from_file("../../config.toml");
+
+    // 6 Mb stack size
+    may::config().set_stack_size(6 * 1024 * 1024);
 
     /////////////////////////////////
     

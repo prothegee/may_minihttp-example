@@ -15,7 +15,6 @@ pub struct Router {
     routes: Vec<Route>,
     static_routes: HashMap<String, RouteHandler>
 }
-#[allow(dead_code)]
 impl Router {
     fn parse_path_pattern(path: &str) -> (Regex, Vec<String>) {
         let mut param_names = Vec::new();
@@ -34,6 +33,7 @@ impl Router {
             .join("/");
 
         let full_pattern = format!("^{}$", pattern_str);
+
         (Regex::new(&full_pattern).unwrap(), param_names)
     }
 
@@ -73,6 +73,8 @@ impl Router {
                 return;
             }
         }
+
+        // TODO: what if octect stream or some file for public access?
 
         resp.status_code(404, "not found, what are you doing?");
     }

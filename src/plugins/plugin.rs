@@ -7,7 +7,7 @@ pub struct PluginProjectDir {
     public_path: String,
     upload_path: String,
 }
-
+#[allow(dead_code)]
 impl PluginProjectDir {
     pub fn new(public_path: String, upload_path: String) -> Self {
         Self {
@@ -25,12 +25,10 @@ impl PluginProjectDir {
         Ok(())
     }
 
-    #[allow(dead_code)]
     pub fn get_public_path(&self) -> &str {
         &self.public_path
     }
-    
-    #[allow(dead_code)]
+
     pub fn get_upload_path(&self) -> &str {
         &self.upload_path
     }

@@ -4,7 +4,6 @@ pub mod status {
 
     use crate::{constants::http, types::status::TStatusConfig};
 
-    #[allow(non_snake_case)]
     pub fn config(req: Request, resp: &mut Response) {
         resp.header(http::content_type::CT_APPLICATION_JSON);
 
@@ -18,13 +17,13 @@ pub mod status {
                 let status = config["config"]["status"].as_integer().expect("config status is not right") as i8;
                 let release_date = config["config"]["release_date"].as_str().expect("config release_date is not right");
 
-                let callbackData = TStatusConfig {
+                let callback = TStatusConfig {
                     status: status,
                     version: version,
                     release_date: release_date
                 };
 
-                callbackData.to_bytes_mut(resp.body_mut());
+                callback.to_bytes_mut(resp.body_mut());
             }
             _ => {
                 resp.status_code(405, "not allowed");

@@ -41,9 +41,9 @@ impl TraitPlugin for PluginProjectDir {
             .ok_or("Missing dir_public_path in config")?
             .to_string();
 
-        let upload_path = config["config"]["dir_public_upload_path"]
+        let upload_path = config["config"]["dir_public_path_upload"]
             .as_str()
-            .ok_or("Missing dir_public_upload_path in config")?
+            .ok_or("Missing dir_public_path_upload in config")?
             .to_string();
 
         let plugin = Self::new(public_path.clone(), upload_path.clone());
@@ -53,7 +53,7 @@ impl TraitPlugin for PluginProjectDir {
         plugin.create_dir(&upload_path)?;
 
         // create extra directories
-        if let Some(extra_paths) = config["extra"]["dir_public_upload_extra_paths"].as_array() {
+        if let Some(extra_paths) = config["extra"]["dir_public_path_upload_extra"].as_array() {
             for path in extra_paths {
                 let path_str = path.as_str().ok_or("Invalid path in extra_paths")?;
                 let full_path = Path::new(&upload_path).join(path_str);

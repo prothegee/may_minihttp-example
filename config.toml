@@ -8,9 +8,9 @@ listeners = [
 # relative from executeable program or use absolute path
 dir_public_path = "../../public"
 # relative from executeable program or use absolute path
-dir_public_upload_path = "../../public/upload"
+dir_public_path_upload = "../../public/upload"
 
 [extra]
-dir_public_upload_extra_paths = [
+dir_public_path_upload_extra = [
     "a", "b", "i"
 ]

@@ -23,6 +23,8 @@ fn main() {
 
     /////////////////////////////////
 
+    let app = BackendAppFramework::new(&config);
+
     let listeners = config["config"]["listeners"]
         .as_array()
         .expect("listeners should be an array object that has address & port key");
@@ -38,7 +40,7 @@ fn main() {
 
     println!("INFO: starting backend {}", listener);
 
-    BackendAppFramework.start(listener)
+    app.start(listener)
         .unwrap()
             .join()
                 .unwrap();

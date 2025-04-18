@@ -8,7 +8,8 @@ buf-min = { version = "0.7.1", features = ["bytes"] } # required to integrates [
 bytes = "1.10.1"
 futures = "0.3.31"
 may = "0.3.49"
-may_minihttp = "0.1.11"
+# may_minihttp = "0.1.11"
+may_minihttp = { path = "vendors/may_minihttp-cap_vec_head" }
 mime_guess = "2.0.5"
 multer = "3.1.0"
 regex = "1.11.1"

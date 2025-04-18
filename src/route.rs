@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, fs, io, path::PathBuf};
 use may_minihttp::{Request, Response};
 use regex::Regex;
 
@@ -13,7 +13,8 @@ struct Route {
 
 pub struct Router {
     routes: Vec<Route>,
-    static_routes: HashMap<String, RouteHandler>
+    static_routes: HashMap<String, RouteHandler>,
+    public_dir: PathBuf
 }
 impl Router {
     fn parse_path_pattern(path: &str) -> (Regex, Vec<String>) {
@@ -39,10 +40,11 @@ impl Router {
 
     ////////////////////////////////////
 
-    pub fn new() -> Self {
+    pub fn with_static(public_dir: PathBuf) -> Self {
         Router {
             routes: Vec::new(),
-            static_routes: HashMap::new()
+            static_routes: HashMap::new(),
+            public_dir,
         }
     }
 
@@ -59,28 +61,65 @@ impl Router {
         }
     }
 
-    pub fn handle_request(&self, req: Request, resp: &mut Response) {
-        let base_path = req.path().splitn(2, '?').next().unwrap_or("");
+    fn try_serve_static(&self, req: &Request, resp: &mut Response) -> io::Result<bool> {
+        // strip query string
+        let path = req.path().splitn(2, '?').next().unwrap_or("/");
+        let rel = path.trim_start_matches('/');
+        
+        // pick root directory canonicalize to stop ../ attacks
+        let root = match self.public_dir.canonicalize() {
+            Ok(p) => p,
+            Err(_) => return Ok(false),
+        };
+        let file_path = root.join(rel);
+        let abs = match file_path.canonicalize() {
+            Ok(p) if p.starts_with(&root) => p,
+            _ => return Ok(false),
+        };
+        if !abs.is_file() {
+            return Ok(false);
+        }
 
-        if let Some(handler) = self.static_routes.get(base_path) {
-            handler(req, resp);
+        // read file to memory
+        let body = fs::read(&abs)
+            .map_err(|e| io::Error::new(io::ErrorKind::Other, format!("read error: {}", e)))?;
+
+        // nothing there
+        if body.is_empty() {
+            return Ok(false);
+        }
+
+        // mime check
+        let mime = mime_guess::from_path(&abs).first_or_octet_stream();
+
+        // set header content type & apply the body content
+        resp.header(format!("Content-Type: {}", mime))
+            .body_vec(body);
+
+        Ok(true)
+    }
+
+    pub fn handle_request(&self, req: Request, resp: &mut Response) {
+        let base = req.path().splitn(2, '?').next().unwrap_or("");
+
+        if let Ok(true) = self.try_serve_static(&req, resp) {
+            return;
+        }
+
+        if let Some(h) = self.static_routes.get(base) {
+            h(req, resp);
             return;
         }
 
         for route in &self.routes {
-            if let Some(_captures) = route.pattern.captures(base_path) {
+            if route.pattern.is_match(base) {
                 (route.handler)(req, resp);
                 return;
             }
         }
 
-        // TODO: what if octect stream or some file for public access?
-        // could be:
-        // - check the url endpoint
-        // - match the file
-        // - render content from content type based on extension?
-        // - blocking or no-blocking?
-
-        resp.status_code(404, "not found, what are you doing?");
+        resp.status_code(404, "Not Found")
+            .header("Content-Type: text/plain")
+            .body("404 Not Found");
     }
 }

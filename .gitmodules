@@ -1,0 +1,4 @@
+[submodule "vendors/may_minihttp-cap_vec_head"]
+	path = vendors/may_minihttp-cap_vec_head
+	url = git@github.com:prothegee/may_minihttp.git
+	branch = header_with_vec
